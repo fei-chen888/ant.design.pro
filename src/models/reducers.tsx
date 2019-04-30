@@ -1,7 +1,7 @@
-export interface IreducersBase<T> {
-    dispatch?: (action: IreducerAction<T>) => void
+export interface IReducersBase<T> {
+    dispatch?: (action: IReducerAction<T>) => void
 }
-export interface IreducerAction<T> {
+export interface IReducerAction<T> {
     type: string
     data?: T
 }

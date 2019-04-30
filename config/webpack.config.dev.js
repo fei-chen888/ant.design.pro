@@ -17,6 +17,11 @@ const getClientEnvironment = require('./env')
 const paths = require('./paths')
 const { devScripts } = require('./externals')
 const externalsMap = {}
+const cssModule = {
+    importLoaders: 1,
+    modules: true,
+    localIdentName: '[name]-[hash:base64:5]'
+}
 devScripts.forEach(item => {
     if (item.key) {
         externalsMap[item.key] = item.value
@@ -144,7 +149,6 @@ module.exports = {
                         test: /\.(js|jsx|mjs)$/,
                         include: paths.appSrc,
                         loader: require.resolve('babel-loader'),
-
                         options: {
                             compact: true
                         }
@@ -175,13 +179,12 @@ module.exports = {
                     // 解析 less 文件，并加入变量覆盖配置
                     {
                         test: /\.less$/,
+                        exclude: [/globalCss/],
                         use: [
                             require.resolve('style-loader'),
                             {
                                 loader: require.resolve('css-loader'),
-                                options: {
-                                    importLoaders: 1
-                                }
+                                options: cssModule
                             },
                             {
                                 loader: require.resolve('postcss-loader'),
@@ -203,11 +206,48 @@ module.exports = {
                                     ]
                                 }
                             },
-                            require.resolve('less-loader')
+                            {
+                                loader: require.resolve('less-loader'),
+                                options: {
+                                    javascriptEnabled: true
+                                }
+                            }
                         ]
                     },
                     {
                         test: /\.css$/,
+                        exclude: [/globalCss/],
+                        use: [
+                            require.resolve('style-loader'),
+                            {
+                                loader: require.resolve('css-loader'),
+                                options: cssModule
+                            },
+                            {
+                                loader: require.resolve('postcss-loader'),
+                                options: {
+                                    // Necessary for external CSS imports to work
+                                    // https://github.com/facebookincubator/create-react-app/issues/2677
+                                    ident: 'postcss',
+                                    plugins: () => [
+                                        require('postcss-flexbugs-fixes'),
+                                        autoprefixer({
+                                            browsers: [
+                                                '>1%',
+                                                'last 4 versions',
+                                                'Firefox ESR',
+                                                'not ie < 9' // React doesn't support IE8 anyway
+                                            ],
+                                            flexbox: 'no-2009'
+                                        })
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        test: /\.css$/,
+                        include: [/globalCss/],
                         use: [
                             require.resolve('style-loader'),
                             {
@@ -234,6 +274,45 @@ module.exports = {
                                             flexbox: 'no-2009'
                                         })
                                     ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        test: /\.less$/,
+                        include: [/globalCss/],
+                        use: [
+                            require.resolve('style-loader'),
+                            {
+                                loader: require.resolve('css-loader'),
+                                options: {
+                                    importLoaders: 1
+                                }
+                            },
+                            {
+                                loader: require.resolve('postcss-loader'),
+                                options: {
+                                    // Necessary for external CSS imports to work
+                                    // https://github.com/facebookincubator/create-react-app/issues/2677
+                                    ident: 'postcss',
+                                    plugins: () => [
+                                        require('postcss-flexbugs-fixes'),
+                                        autoprefixer({
+                                            browsers: [
+                                                '>1%',
+                                                'last 4 versions',
+                                                'Firefox ESR',
+                                                'not ie < 9' // React doesn't support IE8 anyway
+                                            ],
+                                            flexbox: 'no-2009'
+                                        })
+                                    ]
+                                }
+                            },
+                            {
+                                loader: require.resolve('less-loader'),
+                                options: {
+                                    javascriptEnabled: true
                                 }
                             }
                         ]

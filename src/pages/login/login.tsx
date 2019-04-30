@@ -1,20 +1,19 @@
-import './login.less'
+import styles from './login.less'
 import * as React from 'react'
 import { FormComponentProps } from 'antd/lib/form'
-import { IreducersBase } from 'src/models/reducers'
-import { Iuser } from 'src/models/user'
 import { Login } from 'src/components/Login'
 import { AbstractPage, IAbstractPageProps } from 'src/components/Abstract/page'
 
-interface Iprops extends IAbstractPageProps, FormComponentProps, IreducersBase<Iuser> {}
-interface Istate {}
+interface IProps extends IAbstractPageProps, FormComponentProps {}
+interface IState {}
 
 /**
  * 登录页面
  */
-export default class LoginPage extends AbstractPage<Iprops, Istate> {
+interface IProps extends IAbstractPageProps, FormComponentProps {}
+export default class LoginPage extends AbstractPage<IProps, IState> {
     render() {
-      return <Login/>
+      return <div className={styles.login}><Login/></div>
     }
 }
 

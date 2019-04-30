@@ -1,6 +1,7 @@
 import React from 'react'
 import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/component'
 import { ErrorInfo } from 'react'
+import { message } from 'antd';
 interface IProps extends IAbstractComponentProps {}
 interface IState {
     error: Error | null
@@ -40,7 +41,7 @@ class ErrorHandlerClass extends AbstractComponent<IProps, IState> {
     
     displayName = 'ErrorHandlerClass'
     state: IState = {
-        error: new Error(),
+        error: new Error('test'),
         errorInfo: null
     }
 
@@ -50,6 +51,7 @@ class ErrorHandlerClass extends AbstractComponent<IProps, IState> {
     }
 
     catchCallBack(error: Error) {
+        message.error(error.message)
         this.setState({
             error: error,
             errorInfo: null

@@ -1,3 +1,3 @@
-export interface Iuser {
+export interface IUser {
     userName: string
 }

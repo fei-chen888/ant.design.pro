@@ -4,11 +4,11 @@ import { IRouteItem } from 'src/models/route'
 import { rootRouter } from 'src/routes/config/root'
 import { E404Page } from 'src/pages/errors/404'
 
-interface Iprops {
+interface IProps {
     redirect?: string
 }
-interface Istate {}
-export class Routes extends React.Component<Iprops, Istate> {
+interface IState {}
+export class Routes extends React.Component<IProps, IState> {
     routes: Array<IRouteItem>  = rootRouter
 
     render() {

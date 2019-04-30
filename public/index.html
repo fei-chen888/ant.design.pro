@@ -7,6 +7,20 @@
   <meta name="theme-color" content="#000000">
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <script>
+    var ms_ie = false;
+    var ua = window.navigator.userAgent;
+    var old_ie = ua.indexOf('MSIE ');
+    var new_ie = ua.indexOf('Trident/');
+
+    if ((old_ie > -1) || (new_ie > -1)) {
+      ms_ie = true;
+    }
+
+    if (ms_ie) {
+      document.write('<script src="%PUBLIC_URL%/static/js/babel-polyfill/polyfill-7.0.0-beta.49.min.js">\<\/script>')
+    }
+  </script>
   <title>ant.design.pro</title>
 </head>
 <body>

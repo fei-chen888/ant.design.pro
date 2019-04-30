@@ -20,7 +20,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const paths = require('./paths')
 const getClientEnvironment = require('./env')
 const { prodScripts } = require('./externals')
-
+const cssModule = {
+    importLoaders: 1,
+    modules: true,
+    localIdentName: '[name]-[hash:base64:5]'
+}
 const externalsMap = {}
 prodScripts.forEach(item => {
     if (item.key) {
@@ -169,6 +173,7 @@ module.exports = {
                     },
                     {
                         test: /\.less$/,
+                        exclude: [/globalCss/],
                         use: [
                             {
                                 loader: MiniCssExtractPlugin.loader,
@@ -176,9 +181,7 @@ module.exports = {
                             },
                             {
                                 loader: 'css-loader', // translates CSS into CommonJS
-                                options: {
-                                    importLoaders: 1
-                                },
+                                options: cssModule
                             },
                             {
                                 loader: 'postcss-loader',
@@ -199,23 +202,15 @@ module.exports = {
                                 }
                             },
                             {
-                                loader: 'less-loader' // compiles Less to CSS
-                            }],
+                                loader: 'less-loader',
+                                options: {
+                                    javascriptEnabled: true
+                                }
+                            }]
                     },
-                    // The notation here is somewhat confusing.
-                    // "postcss" loader applies autoprefixer to our CSS.
-                    // "css" loader resolves paths in CSS and adds assets as dependencies.
-                    // "style" loader normally turns CSS into JS modules injecting <style>,
-                    // but unlike in development configuration, we do something different.
-                    // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
-                    // (second argument), then grabs the result CSS and puts it into a
-                    // separate file in our build process. This way we actually ship
-                    // a single CSS file in production instead of JS code injecting <style>
-                    // tags. If you use code splitting, however, any async bundles will still
-                    // use the "style" loader inside the async code so CSS from them won't be
-                    // in the main CSS file.
                     {
                         test: /\.css$/,
+                        exclude: [/globalCss/],
                         use: [
                             {
                                 loader: MiniCssExtractPlugin.loader,
@@ -223,9 +218,80 @@ module.exports = {
                             },
                             {
                                 loader: 'css-loader', // translates CSS into CommonJS
+                                options: cssModule
+                            },
+                            {
+                                loader: 'postcss-loader',
+                                options: {
+                                    ident: 'postcss',
+                                    plugins: [
+                                        postcssFlexbugsFixes,
+                                        autoprefixer({
+                                            browsers: [
+                                                '>1%',
+                                                'last 4 versions',
+                                                'Firefox ESR',
+                                                'not ie < 9' // React doesn't support IE8 anyway
+                                            ],
+                                            flexbox: 'no-2009',
+                                        }),
+                                    ]
+                                }
+                            },
+                        ],
+                    },
+                    {
+                        test: /\.less$/,
+                        include: [/globalCss/],
+                        use: [
+                            {
+                                loader: MiniCssExtractPlugin.loader,
+                                options: miniCssPluginOptions,
+                            },
+                            {
+                                loader: 'css-loader',
                                 options: {
                                     importLoaders: 1
-                                },
+                                }
+                            },
+                            {
+                                loader: 'postcss-loader',
+                                options: {
+                                    ident: 'postcss',
+                                    plugins: [
+                                        postcssFlexbugsFixes,
+                                        autoprefixer({
+                                            browsers: [
+                                                '>1%',
+                                                'last 4 versions',
+                                                'Firefox ESR',
+                                                'not ie < 9' // React doesn't support IE8 anyway
+                                            ],
+                                            flexbox: 'no-2009',
+                                        }),
+                                    ]
+                                }
+                            },
+                            {
+                                loader: 'less-loader',
+                                options: {
+                                    javascriptEnabled: true
+                                }
+                            }]
+                    },
+                    {
+                        test: /\.css$/,
+                        include: [/globalCss/],
+                        use: [
+                            {
+                                loader: MiniCssExtractPlugin.loader,
+                                options: miniCssPluginOptions,
+                            },
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    importLoaders: 1
+                                }
                             },
                             {
                                 loader: 'postcss-loader',
@@ -270,47 +336,47 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin(env.stringified),
-        // new UglifyJsPlugin({
-        //     uglifyOptions: {
-        //         parse: {
-        //         // we want uglify-js to parse ecma 8 code. However we want it to output
-        //         // ecma 5 compliant code, to avoid issues with older browsers, this is
-        //         // whey we put `ecma: 5` to the compress and output section
-        //         // https://github.com/facebook/create-react-app/pull/4234
-        //         ecma: 8,
-        //         },
-        //         compress: {
-        //             drop_debugger: true,
-        //             drop_console: true,
-        //             ecma: 5,
-        //             warnings: false,
-        //             // Disabled because of an issue with Uglify breaking seemingly valid code:
-        //             // https://github.com/facebook/create-react-app/issues/2376
-        //             // Pending further investigation:
-        //             // https://github.com/mishoo/UglifyJS2/issues/2011
-        //             comparisons: false,
-        //             // Don't inline functions with arguments, to avoid name collisions:
-        //             // https://github.com/mishoo/UglifyJS2/issues/2842
-        //             inline: 1,
-        //         },
-        //         mangle: {
-        //         safari10: true,
-        //         },
-        //         output: {
-        //         ecma: 5,
-        //         comments: false,
-        //         // Turned on because emoji and regex is not minified properly using default
-        //         // https://github.com/facebook/create-react-app/issues/2488
-        //         ascii_only: true,
-        //         },
-        //     },
-        //     // Use multi-process parallel running to improve the build speed
-        //     // Default number of concurrent runs: os.cpus().length - 1
-        //     parallel: true,
-        //     // Enable file caching
-        //     cache: true,
-        //     sourceMap: shouldUseSourceMap,
-        // }),
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                parse: {
+                // we want uglify-js to parse ecma 8 code. However we want it to output
+                // ecma 5 compliant code, to avoid issues with older browsers, this is
+                // whey we put `ecma: 5` to the compress and output section
+                // https://github.com/facebook/create-react-app/pull/4234
+                ecma: 8,
+                },
+                compress: {
+                    drop_debugger: true,
+                    drop_console: true,
+                    ecma: 5,
+                    warnings: false,
+                    // Disabled because of an issue with Uglify breaking seemingly valid code:
+                    // https://github.com/facebook/create-react-app/issues/2376
+                    // Pending further investigation:
+                    // https://github.com/mishoo/UglifyJS2/issues/2011
+                    comparisons: false,
+                    // Don't inline functions with arguments, to avoid name collisions:
+                    // https://github.com/mishoo/UglifyJS2/issues/2842
+                    inline: 1,
+                },
+                mangle: {
+                safari10: true,
+                },
+                output: {
+                ecma: 5,
+                comments: false,
+                // Turned on because emoji and regex is not minified properly using default
+                // https://github.com/facebook/create-react-app/issues/2488
+                ascii_only: true,
+                },
+            },
+            // Use multi-process parallel running to improve the build speed
+            // Default number of concurrent runs: os.cpus().length - 1
+            parallel: true,
+            // Enable file caching
+            cache: true,
+            sourceMap: shouldUseSourceMap,
+        }),
         new MiniCssExtractPlugin({
             filename: cssFilename
         }),
