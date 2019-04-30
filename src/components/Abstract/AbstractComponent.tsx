@@ -8,13 +8,21 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S> ex
      * 类名
      */
     abstract displayName: string
+
     isLoading: boolean
+
+    /**
+     * render 内容
+     */
+    abstract getRenderContent(): JSX.Element | null | React.ReactNode
+
+    
 
     getDisplayName(): string {
         return this.displayName
     }
     
-    renter() {
-        return <p>AbstractComponent</p>
+    render() {
+        return this.getRenderContent()
     }
 }

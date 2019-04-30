@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Form, Button, Row } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/component'
+import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/AbstractComponent'
 
 
 interface IProps extends IAbstractComponentProps, FormComponentProps {
@@ -29,7 +29,7 @@ class LoginClass extends AbstractComponent<IProps, IState> {
         console.log('ss')
     }
     
-    render() {
+    getRenderContent() {
         return <Row><Button type="primary" onClick={() => this.onLogin()}>登录组件</Button></Row>
     }
 }

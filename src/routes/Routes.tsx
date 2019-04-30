@@ -1,24 +1,28 @@
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { IRouteItem } from 'src/models/route'
-import { rootRouter } from 'src/routes/config/root'
-import { E404Page } from 'src/pages/errors/404'
+import { IRouteItem } from 'src/models/Route'
+import E404 from 'src/pages/Errors/E404'
+import { AbstractComponent, IAbstractComponentProps } from 'src/components/Abstract/AbstractComponent'
+import { RouterConfig } from 'src/routes/Config/R\bouterConfig'
 
-interface IProps {
+interface IProps extends IAbstractComponentProps {
     redirect?: string
 }
 interface IState {}
-export class Routes extends React.Component<IProps, IState> {
-    routes: Array<IRouteItem>  = rootRouter
+export class Routes extends AbstractComponent<IProps, IState> {
 
-    render() {
+    displayName = 'Routes'
+
+    routes: Array<IRouteItem>  = RouterConfig
+
+    getRenderContent() {
         const { redirect } = this.props
         return (
             <Switch>
                 {this.routes.map(v => this.getRoute(v))}
                 {!!redirect && <Redirect exact={true} from="/" to={redirect} />}
                 {/* 404页 */}
-                <Route component={E404Page} />
+                <Route component={E404} />
             </Switch>
         )
     }

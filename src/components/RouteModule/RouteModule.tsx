@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { IRouteItem } from 'src/models/route'
-import { AbstractComponent, IAbstractComponentProps } from 'src/components/Abstract/component'
+import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/AbstractComponent'
+import { IRouteItem } from 'src/models/Route'
 
 interface IProps extends IAbstractComponentProps {
     routes: Array<IRouteItem>
@@ -32,7 +32,7 @@ export class RouteModule extends AbstractComponent<IProps, IState> {
         }
     }
 
-    render() {
+    getRenderContent() {
         const { routes = [] } = this.props
         return <Switch>{routes.map(v => this.getRoute(v))}</Switch>
     }

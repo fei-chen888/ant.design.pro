@@ -1,7 +1,7 @@
-import { IRouteItem } from 'src/models/route'
-import { AsyncLogin } from 'src/dynamicLoad/Login'
+import { AsyncLogin } from 'src/dynamicLoad/Login/AsyncLogin'
+import { IRouteItem } from 'src/models/Route'
 
-export const rootRouter: Array<IRouteItem> = [
+export const RouterConfig: Array<IRouteItem> = [
     {
         title: '登录',
         exact: true,
