@@ -66,7 +66,7 @@
 
 ## 原则 ##
 * 1、按页面分包
-* 
+
 ## 规范 ##
 * 1、按路由名称创建对应的目录；
 * 2、使用react-loadable与webpack import（webpackChunkName使用pages/页面名称）实现对页面的动态加载，并以Async+页面名称导出；
