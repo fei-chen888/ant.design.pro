@@ -1,8 +1,15 @@
 export interface IRouteItem {
     title: string
-    exact: boolean
     path: string
-    to: string
-    component?: React.ComponentClass | React.StatelessComponent
+    to?: string
+    component?: any
+    children?: Array<IRouteItem>
+    showMenu?: boolean
+    menuIcon?: string
     remark: string
+}
+
+export interface IExRouteItem extends IRouteItem {
+    root?: string
+    parent?: string
 }

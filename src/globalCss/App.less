@@ -1,3 +1,73 @@
 @import "./reset.less";
 @import "~antd/dist/antd.less";
 @import "./AntdTheme.less";
+.ant-form-item-with-help {
+    margin-bottom: @form-item-margin-bottom;
+}
+.global-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    .global-layout-footer-copyright {
+        color: @text-color-secondary;
+        text-align: center;
+    }
+    .global-layout-content {
+        padding: @padding-lg;
+        flex: 1;
+        overflow-y: auto;
+    }
+}
+.global-layout-sider {
+    height: 100vh;
+    overflow: hidden;
+    .global-layout-sider-logo {
+        height: @layout-header-height;
+        line-height: @layout-header-height;
+        padding: 0 24px;
+        background: #002140;
+        display: flex;
+        align-items: center;
+        img {
+            width: 32px;
+            height: 32px;
+            margin-right: @padding-lg;
+        }
+        h1 {
+            font-weight: 500;
+            color: @white;
+            flex: 1 0 0;
+            margin-bottom: 0;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+    }
+    .global-layout-sider-menu {
+        position: absolute;
+        top: @layout-header-height;
+        bottom: 0;
+        width: 100%;
+        overflow-y: auto;
+    }
+}
+.ant-layout-sider-collapsed {
+    .global-layout-sider-logo {
+        h1 {
+            display: none;
+        }
+    }
+}
+.global-layout-main {
+    .global-layout-main-header {
+        background: #fff;
+        box-shadow: @box-shadow-base;
+        .ant-breadcrumb {
+            display: inline-block;
+            margin-left: @padding-lg;
+        }
+    }
+    .global-layout-main-content {
+        padding: @padding-lg;
+    }
+}
