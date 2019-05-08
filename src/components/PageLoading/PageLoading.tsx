@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Skeleton } from 'antd'
+import { Spin } from 'antd'
 
 interface IProps {}
 
@@ -8,6 +8,6 @@ interface IProps {}
  */
 export const PageLoading: React.SFC<IProps> = () => {
     return (
-        <Skeleton loading={true}/>
+        <Spin size="large" className="global-spin-full"/>
     )
 }

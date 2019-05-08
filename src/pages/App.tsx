@@ -28,8 +28,9 @@ class App extends React.Component<IProps, IState> {
         return (
           <LocaleProvider locale={zhCN}>
               <ErrorHandler>
-                {this.props.loading && <Spin size="large" className="global-spin-full"/>}
-                <Routes redirect="/login" />
+                <Spin size="large" spinning={this.props.loading}>
+                    <Routes redirect="/login" />
+                </Spin>
               </ErrorHandler>
           </LocaleProvider>
         )
