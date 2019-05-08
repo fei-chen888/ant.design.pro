@@ -39,7 +39,7 @@
 
 ## 规范 ##
 * 1、组件继承AbstractComponent类，并设置displayName与getRenderContent，不可覆盖render；
-* 2、请求接口时，使用async/await，并调用this.showLoading(title: string)，请求完成后调用this.hidenLoading();
+* 2、请求接口时，使用async/await，并调用this.showLoading()，请求完成后调用this.hidenLoading();
 * 3、类中方法需要Try...Catch的时候，可使用methodTryCatchDecorator装饰器自动处理捕捉，详细请查看methodTryCatchDecorator的实现；
 * 4、组件样式文件存放在组件当前目录下，并采用CSS MODULES式引入；
 * 5、组件属性、状态必需定义好typeScript类型，不可使用any；
@@ -54,7 +54,7 @@
 
 ## 规范 ##
 * 1、页面继承AbstractPage类，类名为“XXXPage”，并设置displayName与getRenderContent，不可覆盖render；
-* 2、请求接口时，使用async/await，并调用this.showLoading(title: string)，请求完成后调用this.hidenLoading();
+* 2、请求接口时，使用async/await，并调用this.showLoading()，请求完成后调用this.hidenLoading();
 * 3、类中方法需要Try...Catch的时候，可使用methodTryCatchDecorator装饰器自动处理捕捉，详细请查看methodTryCatchDecorator的实现；
 * 4、页面样式文件存放在组件当前目录下，并采用CSS MODULES式引入；
 * 5、页面类必需是export default；
@@ -72,7 +72,7 @@
 * 2、使用react-loadable与webpack import（webpackChunkName使用pages/页面名称）实现对页面的动态加载，并以Async+页面名称导出；
 
 # 接口业务层规范 #
-* 1、按功能模块划分实现，存放于servicesnamespace的方式导出，例如：export namespace UserApi；
+* 1、按功能模块划分实现，存放于services，采用namespace的方式导出，例如：export namespace UserApi；
 * 2、接口业务的实现必需是return Promise；
 * 3、接口的入参，返回必需定义好typeScript类型，不可使用any；
 
