@@ -16,6 +16,7 @@
 @normal-color: #d9d9d9;
 @white: #fff;
 @black: #000;
+@component-background: @white;
 
 @line-height-base: 1.6;
 
@@ -60,7 +61,7 @@
 @radio-button-active-color: @primary-7;
 
 // Layout
-@layout-body-background: #f0f2f5;
+@layout-body-background: #f2f2f2;
 @layout-header-background: #001529;
 @layout-footer-background: @layout-body-background;
 @layout-header-height: 64px;
@@ -148,9 +149,9 @@
 
 // Modal
 // --
-@modal-body-padding: 24px;
-@modal-header-bg: @component-background;
-@modal-footer-bg: transparent;
+@modal-body-padding: 16px;
+@modal-header-bg: @layout-body-background;
+@modal-footer-bg: @layout-body-background;
 @modal-mask-bg: fade(@black, 65%);
 
 // Progress

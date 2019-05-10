@@ -4,6 +4,7 @@ import { FormComponentProps } from 'antd/lib/form'
 import { IAbstractPageProps, AbstractPage } from 'src/components/Abstract/AbstractPage'
 
 interface IProps extends IAbstractPageProps, FormComponentProps {}
+
 interface IState {}
 
 /**
@@ -11,7 +12,10 @@ interface IState {}
  */
 interface IProps extends IAbstractPageProps, FormComponentProps {}
 export default class AnalysisPage extends AbstractPage<IProps, IState> {
+    
     displayName = 'analysisPage'
+
+    state: IState = {}
 
     getRenderContent() {
         return <div className={styles.analysisPage}>{this.displayName}</div>

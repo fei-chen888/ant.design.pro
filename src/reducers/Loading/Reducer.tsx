@@ -1,20 +1,31 @@
 import { loadingActionType } from './ActionType'
 import { IReducerAction } from 'src/models/Reducers'
 
-interface ILoading {
+export interface IReducerLoadingState {
   loading: boolean
+  counts: number
 }
 
-const initState: ILoading = {
-  loading: false
+const initState: IReducerLoadingState = {
+  loading: false,
+  counts: 0
 }
 
-export const loadingReducer = (state: ILoading = initState, action: IReducerAction<ILoading>) => {
+export const loadingReducer = (state: IReducerLoadingState = initState, action: IReducerAction<IReducerLoadingState>) => {
+  let {counts} = state
   switch (action.type) {
     case loadingActionType.SHOW:
-      return {loading: true}
+      counts = counts + 1
+      return {
+        loading: true,
+        counts
+      }
     case loadingActionType.HIDEN:
-      return {loading: false}
+      counts = Math.max(counts - 1, 0)
+      return {
+        loading: counts ? true : false,
+        counts
+      }
     default:
       return state
   }

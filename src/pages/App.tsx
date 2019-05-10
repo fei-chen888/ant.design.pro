@@ -1,21 +1,14 @@
 import * as React from 'react'
-import { LocaleProvider, Spin, notification } from 'antd'
+import { LocaleProvider, notification } from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import { ErrorHandler } from 'src/components/ErrorHandler/ErrorHandler'
 import { Routes } from 'src/routes/Routes'
-import { connect } from 'react-redux'
-import { IReduxState } from 'src/reducers/Store'
+import { ReduxSpin } from 'src/components/ReduxSpin/ReduxSpin'
+import { authService } from 'src/services/Auth'
+
+interface IProps {}
 
 interface IState {}
-interface IProps {
-    loading: boolean
-}
-
-const mapStateToProps = (state: IReduxState): IProps => {
-    return {
-        loading: state.loadingStore.loading
-    }
-}
 
 notification.config({
     placement: 'topRight',
@@ -24,17 +17,21 @@ notification.config({
 })
 
 class App extends React.Component<IProps, IState> {
+    
+    componentDidMount() {
+        authService.dispatchAuthToStore()
+    }
+    
     render() {
         return (
           <LocaleProvider locale={zhCN}>
               <ErrorHandler>
-                <Spin size="large" spinning={this.props.loading}>
-                    <Routes redirect="/login" />
-                </Spin>
+                <ReduxSpin/>
+                <Routes redirect="/login" />
               </ErrorHandler>
           </LocaleProvider>
         )
     }
 }
 
-export default connect(mapStateToProps)(App)
+export default App

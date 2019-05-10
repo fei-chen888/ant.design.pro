@@ -6,11 +6,6 @@ import App from './pages/App'
 import { Provider } from 'react-redux'
 import { store } from 'src/reducers/Store'
 
-// 监听state变化
-store.subscribe(() => {
-  console.log('subscribe:', store.getState())
-})
-
 ReactDOM.render(
     <Provider store={store}>
         <App />

@@ -14,6 +14,8 @@
         "braft-editor": "^1.9.8",
         "copy-to-clipboard": "^3.0.8",
         "copy-webpack-plugin": "^5.0.3",
+        "crypto": "^1.0.1",
+        "crypto-js": "^3.1.9-1",
         "csv-parser": "^2.1.0",
         "echarts": "^4.2.0-rc.1",
         "lodash": "^4.17.10",

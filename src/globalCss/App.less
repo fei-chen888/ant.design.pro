@@ -33,12 +33,8 @@
         background: #002140;
         display: flex;
         align-items: center;
-        img {
-            width: 32px;
-            height: 32px;
-            margin-right: @padding-lg;
-        }
         h1 {
+            margin-left: @padding-lg;
             font-weight: 500;
             color: @white;
             flex: 1 0 0;
@@ -70,6 +66,15 @@
             display: inline-block;
             margin-left: @padding-lg;
         }
+        .global-layout-main-header-right {
+            float: right;
+            height: 100%;
+            cursor: pointer;
+            .global-layout-main-header-right-avatar {
+                // border: 1px @primary-color solid;
+                margin-right: 12px;
+            }
+        }
     }
     .global-layout-main-content {
         padding: @padding-lg;
@@ -88,4 +93,21 @@
     justify-content: center;
     background: rgba(255, 255, 255, 0.6);
     z-index: 999;
+}
+
+// Select
+.ant-select {
+    width: 100%;
+}
+
+// Modal
+.ant-modal-header {
+    padding: 16px;
+}
+.ant-modal-body {
+    max-height: 450px;
+    overflow-y: auto;
+}
+.ant-modal-footer {
+    padding: 16px;
 }

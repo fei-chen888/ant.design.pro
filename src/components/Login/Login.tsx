@@ -1,24 +1,23 @@
 import styles from './Login.less'
 import * as React from 'react'
-import { Form, Button, Input, Icon, Row, notification } from 'antd'
-import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/AbstractComponent'
+import { Form, Button, Input, Icon, Row } from 'antd'
+import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
 import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
-import { withRouter, RouteComponentProps } from 'react-router'
 import { FormComponentProps } from 'antd/lib/form'
 import { authService } from 'src/services/Auth'
-import { STATUSCODE } from 'src/utils/Constants'
+import { REQUEST_STATUSCODE } from 'src/utils/Constants'
+import { setToken } from 'src/utils/CryptoLocalStorage'
+import { IAuthLogin } from 'src/models/Auth'
 
 
-interface IProps extends IAbstractComponentProps, FormComponentProps,  RouteComponentProps<any> {
+interface IProps extends IAbstractComponentProps, FormComponentProps {
     /**
-     * 登录事件
+     * 登录成功事件
      */
-    onSubmit?: () => void
+    onLoginSuccess: (d: IAuthLogin) => void
 }
 
-interface IState {
-
-}
+interface IState extends IAbstractComponentState {}
 
 /**
  * 登录组件表单字段
@@ -28,12 +27,18 @@ export interface ILoginFormFileds {
     password: string
 }
 
-export class LoginClass extends AbstractComponent<IProps, IState> {
+class LoginClass extends AbstractComponent<IProps, IState> {
+
     displayName = 'LoginClass'
 
+    state: IState = {}
+
+    /**
+     * 登录事件
+     */
     @methodTryCatchDecorator()
     async onLogin() {
-        const { history, form } = this.props
+        const { form } = this.props
         form.validateFields( async (error, values: ILoginFormFileds) => {
             if (error) {
                 return
@@ -43,13 +48,10 @@ export class LoginClass extends AbstractComponent<IProps, IState> {
                 username: values.username,
                 password: values.password
             })
-            if (res.data.statusCode === STATUSCODE.SUCCESS.code) {
-                history.replace('/admin/dashboard/analysis')
-            } else {
-                notification.warn({
-                    message: '登录提示',
-                    description: res.data.statusMessage
-                })
+            if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code) {
+                setToken(res.data.responseContent.token)
+                authService.dispatchAuthToStore()
+                this.props.onLoginSuccess(res.data.responseContent)
             }
             this.hidenLoading()
         })
@@ -89,4 +91,4 @@ export class LoginClass extends AbstractComponent<IProps, IState> {
 /**
  * 登录组件
  */
-export const Login = Form.create()(withRouter(LoginClass))
+export default LoginClass

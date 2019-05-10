@@ -1,31 +1,41 @@
 import * as React from 'react'
-import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/AbstractComponent'
-import { RouteComponentProps, Switch, Route } from 'react-router'
+import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
+import { RouteComponentProps, Switch, Route, withRouter } from 'react-router'
 import { IExRouteItem } from 'src/models/Route'
 import { findRouterByPath } from 'src/routes/Config/RouterConfig'
-import { Layout, Icon, Menu } from 'antd'
+import { Layout, Icon, Menu, Avatar, Dropdown } from 'antd'
 import { RouteBreadcrumb } from 'src/components/RouteBreadcrumb/RouteBreadcrumb'
 import { Link } from 'react-router-dom'
-import { MenuProps } from 'antd/lib/menu'
+import { MenuProps, ClickParam } from 'antd/lib/menu'
+import { connect } from 'react-redux'
+import { IReduxState } from 'src/reducers/Store'
+import { IAuthinfoUser } from 'src/models/Auth'
+import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
+import { authService } from 'src/services/Auth'
+import { REQUEST_STATUSCODE, ADMIN_LOGIN } from 'src/utils/Constants'
 
 interface IProps extends IAbstractComponentProps, RouteComponentProps<any> {
+    user: IAuthinfoUser | undefined
 }
 
-interface IState {
+interface IState extends IAbstractComponentState {
     collapsed: boolean
 }
 
-export class AsyncAdmin extends AbstractComponent<IProps, IState> {
+export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState> {
+
+    displayName = 'AsyncSubModuleRouter'
 
     state: IState = {
         collapsed: false
     }
 
-    displayName = 'AsyncSubModuleRouter'
-
     routes: Array<IExRouteItem> = []
 
-    get menuOpt(): MenuProps {
+    /**
+     * 获限sider menu属性
+     */
+    get getMenuOpt(): MenuProps {
         const { pathname } = this.props.location
         let defaultSelectedKeys: Array<string> = []
         let defaultOpenKeys: Array<string> = []
@@ -43,6 +53,20 @@ export class AsyncAdmin extends AbstractComponent<IProps, IState> {
         }
     }
 
+    /**
+     * 头部用户头像DropdownMenu
+     */
+    get getUserDropdownMenu() {
+        return (
+            <Menu onClick={e => this.onUserDropdownMenuClick(e)}>
+                <Menu.Item key="logout"><Icon type="logout" />退出账号</Menu.Item>
+            </Menu>
+        )
+    }
+
+    /**
+     * 获取admin路由下子菜单
+     */
     getAdminRoutes(): Array<IExRouteItem> {
         if (this.routes.length === 0) {
             this.routes = findRouterByPath(this.props.match.path)
@@ -50,6 +74,9 @@ export class AsyncAdmin extends AbstractComponent<IProps, IState> {
         return this.routes
     }
 
+    /**
+     * 菜单内容
+     */
     getAdminMenusContent() {
         const { path } = this.props.match
         return this.getAdminRoutes().map(item => {
@@ -77,16 +104,46 @@ export class AsyncAdmin extends AbstractComponent<IProps, IState> {
         })
     }
 
+    /**
+     * Sider收缩/展开
+     */
+    onToggle() {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        })
+    }
+
+    /**
+     * 用户DropdownMenu事件
+     */
+    @methodTryCatchDecorator()
+    async onUserDropdownMenuClick(e: ClickParam) {
+        if (e.key === 'logout') {
+            const res = await authService.logout()
+            if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code) {
+                authService.removeAuthFormStore()
+                this.gotoLogin()
+            }
+        }
+    }
+    
+    /**
+     * 跳转到登录页面
+     */
+    gotoLogin() {
+        this.props.history.replace(ADMIN_LOGIN)
+    }
+
     getRenderContent() {
         return (
             <Layout>
                 <Layout.Sider className="global-layout-sider" trigger={null} collapsible={true} collapsed={this.state.collapsed}>
                     <div className="global-layout-sider-logo">
-                        <img src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"/>
+                        <Avatar size={32} src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"/>
                         <h1>Ant Design</h1>
                     </div>
                     <div className="global-layout-sider-menu">
-                        <Menu {...this.menuOpt}>
+                        <Menu {...this.getMenuOpt}>
                             {this.getAdminMenusContent()}
                         </Menu>
                     </div>
@@ -99,6 +156,14 @@ export class AsyncAdmin extends AbstractComponent<IProps, IState> {
                             onClick={this.onToggle}
                         />
                         <RouteBreadcrumb {...this.props} routers={this.getAdminRoutes()}/>
+                        {this.props.user ? (
+                            <Dropdown overlay={this.getUserDropdownMenu}>
+                                <div className="global-layout-main-header-right">
+                                    <Avatar className="global-layout-main-header-right-avatar" shape="circle" size={24} src={this.props.user.icon}/>
+                                    <span>{this.props.user.fullName}</span>
+                                </div>
+                            </Dropdown>
+                        ) : null}
                     </Layout.Header>
                     <Layout.Content className="global-layout-main-content">
                         <Switch>
@@ -111,10 +176,16 @@ export class AsyncAdmin extends AbstractComponent<IProps, IState> {
             </Layout>
         )
     }
+}
 
-    onToggle = () => {
-        this.setState({
-            collapsed: !this.state.collapsed,
-        })
+/**
+ * admin路由页面
+ * @param state 
+ */
+const mapStateToProps = (state: IReduxState) => {
+    return {
+        user: state.authStore.user
     }
-  }
+}
+
+export const AsyncAdmin = withRouter(connect(mapStateToProps)(AsyncSubModuleRouterClass))

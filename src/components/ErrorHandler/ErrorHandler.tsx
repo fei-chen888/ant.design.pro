@@ -1,9 +1,9 @@
 import React from 'react'
 import { ErrorInfo } from 'react'
-import { IAbstractComponentProps, AbstractComponent } from 'src/components/Abstract/AbstractComponent'
+import { IAbstractComponentProps, IAbstractComponentState, AbstractComponent } from 'src/components/Abstract/AbstractComponent'
 
 interface IProps extends IAbstractComponentProps {}
-interface IState {
+interface IState extends IAbstractComponentState {
     error: Error | null
     errorInfo: ErrorInfo | null
 }
@@ -17,10 +17,9 @@ class ErrorHandlerClass extends AbstractComponent<IProps, IState> {
         errorInfo: null
     }
 
-    constructor(props: IProps) {
-        super(props)
-    }
-
+    /**
+     * 捕捉组件中render错误
+     */
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         this.setState({
             error,

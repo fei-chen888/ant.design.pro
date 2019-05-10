@@ -45,6 +45,7 @@ export const RouterConfig: Array<IRouteItem> = [
         title: '后台管理',
         path: '/admin',
         component: AsyncAdmin,
+        needAuthorized: true,
         children: [
             {
                 title: '数据面版',

@@ -1,3 +1,5 @@
+import { notice } from 'src/utils/Notification'
+
 /**
  * 方法执行错误捕捉装饰器,支持async方法
  * @param catchCallbackName 类中接收cath中回调方法名，回调参数error：Error
@@ -11,8 +13,13 @@ export function methodTryCatchDecorator(catchCallbackName?: string ) {
             const errorMessage = `${displayName}/${methodName}:${error.toString()}`
             if (catchCallbackName && _this[catchCallbackName]) {
                 _this[catchCallbackName](error)
+            } else {
+                notice({
+                    type: 'error',
+                    message: '脚本错误',
+                    description: errorMessage
+                })
             }
-            console.log(errorMessage)
         }
     }
 

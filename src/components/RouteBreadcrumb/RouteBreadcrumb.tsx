@@ -10,21 +10,15 @@ interface IProps extends IAbstractComponentProps, RouteComponentProps<any> {
 
 interface IState { }
 
-/**
- * 路由面包屑组件
- */
-export class RouteBreadcrumb extends AbstractComponent<IProps, IState> {
+class RouteBreadcrumbClass extends AbstractComponent<IProps, IState> {
 
-    displayName = 'RouteBreadcrumb'
+    displayName = 'RouteBreadcrumbClass'
 
-    getRenderContent() {
-        return (
-            <Breadcrumb>
-                {this.getBreadcrumb().map(item => <Breadcrumb.Item key={item.path}>{item.title}</Breadcrumb.Item>)}
-            </Breadcrumb>
-        )
-    }
+    state: IState = {}
 
+    /**
+     * 从路由中匹配面包屑
+     */
     getBreadcrumb(): Array<IRouteItem> {
         const { history, routers } = this.props
         const breadcrumb: Array<IRouteItem> = []
@@ -36,4 +30,17 @@ export class RouteBreadcrumb extends AbstractComponent<IProps, IState> {
         })
         return breadcrumb
     }
+
+    getRenderContent() {
+        return (
+            <Breadcrumb>
+                {this.getBreadcrumb().map(item => <Breadcrumb.Item key={item.path}>{item.title}</Breadcrumb.Item>)}
+            </Breadcrumb>
+        )
+    }
 }
+
+/**
+ * 路由面包屑组件
+ */
+export const RouteBreadcrumb = RouteBreadcrumbClass
