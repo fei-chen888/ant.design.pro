@@ -35,7 +35,7 @@ export namespace authService {
     /**
      * 获取用户信息
      */
-    export function authinfos(tenantCode: string) {
+    export function getAuthinfos(tenantCode: string) {
         return request.get<IResponseBase<IAuthinfo>>(`/auth/noauth/${tenantCode}/users/authinfos`)
     }
 

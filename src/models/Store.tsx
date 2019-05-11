@@ -1,7 +1,7 @@
 /**
  * 线下门店列表返回数据
  */
-export interface IListOfflineStore {
+export interface IOfflineStoreList {
     id: number
     storeCode: string
     storeTypeCode: string

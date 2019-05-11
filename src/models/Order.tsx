@@ -1,0 +1,107 @@
+/**
+ * 订单列表数据
+ */
+export interface IOrderList {
+    shippingAmount: number
+    shopkeeperId: number
+    shopkeeperName: string
+    staffId: number
+    staffMobile: string
+    status: string
+    storeCode: string
+    storeId: number
+    storeName: string
+    storeTypeCode: string
+    tenantCode: string
+    totalAmount: number
+    updateTime: string
+    updateUserId: number
+    userName: string
+    wechatAccountId: number
+    addressId: number
+    buyUserMessage: string
+    cancleRemark: string
+    channelId: number
+    channelSource: string
+    channelType: string
+    commentStatus: string
+    createTime: string
+    createUserId: number
+    customerId: number
+    customerName: string
+    customerOrderHideFlag: string
+    discountAmount: number
+    expressCode: string
+    expressCompanyCode: string
+    expressCompanyName: string
+    expressType: string
+    formId: string
+    groupOrderStatus: string
+    id: number
+    invoiceDetail: string
+    invoiceId: number
+    lat: number
+    lng: number
+    onlineType: string
+    orderCode: string
+    orderStatus: string
+    orderType: string
+    partnerMobile: string
+    paymentAmount: number
+    paymentCode: string
+    paymentTime: string
+    paymentType: string
+    promotionAmount: number
+    refundStatus: string
+    remarks: string
+    returnedStatus: string
+    addressDetail: string
+    saleOrderList: Array<IOrderSaleOrderList>
+}
+
+/**
+ * 订单商品清单
+ */
+export interface IOrderSaleOrderList {
+    couponId: number
+    createTime: string
+    createUserId: number
+    deductingStockModel: string
+    discountAmount: number
+    id: number
+    itemTotalAmount: number
+    itemType: string
+    itemTypeObjectId: number
+    orderId: number
+    picUrl: string
+    preferentialCode: string
+    productBrandId: number
+    productBrandName: string
+    productCode: string
+    productId: number
+    productName: string
+    productPaymentAmount: number
+    productSku: string
+    productSkuCode: string
+    productSkuId: number
+    productType: string
+    productWeight: number
+    promotionDetail: string
+    quantity: number
+    recommenderId: number
+    returnedAmount: number
+    returnedQuantity: number
+    salePrice: number
+    saleStaffId: number
+    saleStaffName: string
+    singleProductPaymentAmount: number
+    status: string
+    storeId: number
+    tagPrice: number
+    tenantCode: string
+    updateTime: string
+    updateUserId: number
+    waiterStaffId: number
+    waiterStaffName: string
+    weightUnit: string
+}

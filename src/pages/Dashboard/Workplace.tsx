@@ -1,20 +1,22 @@
 import styles from './Workplace.less'
 import * as React from 'react'
-import { Form, Col, Input, Button, Icon } from 'antd'
+import { Form, Button, Icon } from 'antd'
 import { IAbstractPageProps, AbstractPage, IAbstractPageState } from 'src/components/Abstract/AbstractPage'
-import { IListOfflineStore } from 'src/models/Store'
-import { IComponentState } from 'src/models/Base'
-import { OfflineStoreSelect } from 'src/components/Store/OfflineStoreSelect'
 import { FormComponentProps } from 'antd/lib/form'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { OrderSearchForm, IOrderSearchFormField } from 'src/components/Order/OrderSearhForm'
+import { orderService, IOrderServiceOrderList } from 'src/services/Order'
+import { OrderListTable } from 'src/components/Order/OrderListTable'
+import { IOrderList } from 'src/models/Order'
+import { DEFAULT_PAGESIZE } from 'src/utils/Constants'
 
 interface IProps extends IAbstractPageProps, FormComponentProps, RouteComponentProps<any> {}
 
-interface IState extends IAbstractPageState {}
-
-interface IFormField {
-    offlineStore: IListOfflineStore | undefined
+interface IState extends IAbstractPageState {
+    orderList: Array<IOrderList>
 }
+
+
 
 /**
  * 工作台
@@ -23,17 +25,14 @@ class WorkplacePageClass extends AbstractPage<IProps, IState> {
 
     displayName = 'WorkplacePageClass'
 
-    state: IState = {}
+    state: IState = {
+        orderList: [],
+        pageNum: 1,
+        pageSize: DEFAULT_PAGESIZE,
+        total: 0
+    }
 
-    /**
-     * 子组件状态列表
-     */
-    componentStateList: Array<IComponentState> = [
-        {
-            componentName: 'OfflineStoreSelect',
-            state: 'pending'
-        }
-    ]
+    formSearchData: IOrderSearchFormField | undefined = undefined
 
     componentDidMount() {
         this.setFormValue()
@@ -44,45 +43,57 @@ class WorkplacePageClass extends AbstractPage<IProps, IState> {
      */
     setFormValue() {
         const { setFieldsValue } = this.props.form
-        const data: IFormField = {
-            offlineStore: { id: 147 } as IListOfflineStore
+        const data: IOrderSearchFormField = {
+            orderCode: '',
+            offlineStore: undefined
         }
         setFieldsValue(data)
-    }
-
-    /**
-     * 子组件状态改变事件
-     */
-    onComponentStateChange(componentName: string, state: 'pending' | 'complete') {
-        if (state === 'complete') {
-            this.componentStateList.forEach(item => {
-                if (item.componentName === componentName) {
-                    item.state = state
-                }
-            })
-            const hasPending = this.componentStateList.some(item => {
-                return item.state !== 'complete'
-            })
-            if (!hasPending) {
-                this.getOrderListData()
-            }
-        }
     }
 
     /**
      * 获取订单数据
      */
     async getOrderListData() {
+        const data = this.formSearchData
+        const { pageSize = 1, pageNum = 1 } = this.state
         this.showLoading()
+        let params: IOrderServiceOrderList = {
+            orderCode: data ? data.orderCode : '',
+            onlineType: 'ONLINE',
+            storeId: data ? (data.offlineStore ? data.offlineStore.id : undefined) : undefined,
+            pageSize,
+            pageNum
+        }
+        const res = await orderService.getOrderList(params)
+        if (res) {
+            this.setState({
+                orderList: res.data.responseContent.list,
+                total: res.data.responseContent.total
+            })
+        }
         this.hidenLoading()
+    }
+
+    /**
+     * 表格切页
+     */
+    onPageChange(pageNum: number) {
+        this.setState(
+            {
+                pageNum
+            },
+            () => {
+                this.getOrderListData()
+            }
+        )
     }
 
     /**
      * 查询事件
      */
-    onSearch() {
-        const { getFieldsValue } = this.props.form
-        console.log(getFieldsValue())
+    onSearch(d: IOrderSearchFormField | undefined) {
+        this.formSearchData = d
+        this.getOrderListData()
     }
 
     /**
@@ -94,23 +105,20 @@ class WorkplacePageClass extends AbstractPage<IProps, IState> {
     }
 
     getRenderContent() {
-        const { getFieldDecorator } = this.props.form
+        const { orderList, pageNum, total, pageSize } = this.state
         return (
             <div className={styles.workplacePage}>
-                <Form className="global-form-search">
-                    <Col span={24}>
-                        <Form.Item label="订单编号">
-                            {getFieldDecorator('orderCode')(<Input placeholder="搜索订单编号" style={{width: 200}}/>)}
-                        </Form.Item>
-                        <Form.Item label="线下门店">
-                            {getFieldDecorator('offlineStore')(<OfflineStoreSelect onComponentStateChange={d => this.onComponentStateChange('OfflineStoreSelect', d)}/>)}
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" onClick={() => this.onSearch()}>查询</Button>
-                        </Form.Item>
-                    </Col>
-                </Form>
+                <OrderSearchForm {...this.props} onChange={d => this.onSearch(d)}/>
                 <Button type="primary" onClick={() => this.onCreate()}><Icon type="plus"/>新建</Button>
+                <div className={styles.orderListTable}>
+                    <OrderListTable 
+                        value={orderList} 
+                        pageNum={pageNum} 
+                        pageSize={pageSize}
+                        total={total}
+                        onPageChange={page => this.onPageChange(page)}
+                        />
+                </div>
             </div>
         )
     }

@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Dropdown, Button, Icon, Menu, Avatar, Pagination } from 'antd'
 import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
 import { REQUEST_STATUSCODE, DEFAULT_PAGESIZE_SMALL } from 'src/utils/Constants'
-import { IListOfflineStore } from 'src/models/Store'
+import { IOfflineStoreList } from 'src/models/Store'
 import { storeService } from 'src/services/Store'
 import { connect } from 'react-redux'
 import { offlineStoreSelectMapStateToProps, IReducerOfflineStoreSelectState } from 'src/reducers/OfflineStoreSelect/Reducer'
@@ -14,15 +14,15 @@ import { FormConnectHOC } from 'src/components/HOC/Hoc'
  * reduxStore redux中的数据
  * value IListOfflineStore，如果只有id，其他字段请默认为‘’，组件会请求接口补全其他字段
  */
-interface IProps extends IAbstractComponentProps<IListOfflineStore> {
+interface IProps extends IAbstractComponentProps<IOfflineStoreList> {
     reduxStore?: IReducerOfflineStoreSelectState
-    value?: IListOfflineStore
+    value?: IOfflineStoreList
     width?: number
 }
 
 interface IState extends IAbstractComponentState {
-    list: Array<IListOfflineStore>
-    selectValue: IListOfflineStore | undefined
+    list: Array<IOfflineStoreList>
+    selectValue: IOfflineStoreList | undefined
     dropdownVisible: boolean
 }
 
@@ -100,7 +100,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
     /**
      * MenuItemContent
      */
-    getMenuItemContent(e?: IListOfflineStore) {
+    getMenuItemContent(e?: IOfflineStoreList) {
         return e ? <div className={styles.menuItem}><Avatar size={16} src={e.storePicUrl} className={styles.menuItemAvatar}/><span className={styles.menuItemTitle}>{e.storeName}</span></div> : <span className={styles.menuItemTitle}>全部</span>
     }
 
@@ -108,7 +108,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
      * DropdownMenu事件
      */
     @methodTryCatchDecorator()
-    onDropdownMenuClick(e?: IListOfflineStore) {
+    onDropdownMenuClick(e?: IOfflineStoreList) {
         const { onChange } = this.props
         const { selectValue } = this.state
         if (selectValue === e) {
@@ -146,7 +146,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
     async getOfflineStoreDate() {
         const { pageNum = 1, pageSize = DEFAULT_PAGESIZE_SMALL } = this.state
         this.showLoading()
-        const res = await storeService.listAllOffline({
+        const res = await storeService.getOfflineStoreList({
             pageNum,
             pageSize
         })
@@ -182,7 +182,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
             selectValue = {
                 id: storeId,
                 storeName: '-'
-            } as IListOfflineStore
+            } as IOfflineStoreList
         }
         this.setState(
             {

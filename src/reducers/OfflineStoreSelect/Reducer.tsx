@@ -1,6 +1,6 @@
 import { offlineStoreSelectActionType } from './ActionType'
 import { IReducerAction } from 'src/models/Reducers'
-import { IListOfflineStore } from 'src/models/Store'
+import { IOfflineStoreList } from 'src/models/Store'
 import { DEFAULT_PAGESIZE_SMALL } from 'src/utils/Constants'
 import { IReduxState } from 'src/reducers/Store'
 import _ from 'lodash'
@@ -9,7 +9,7 @@ export interface IReducerOfflineStoreSelectState {
   total: number
   pageNum: number
   pageSize: number
-  list: Array<IListOfflineStore>
+  list: Array<IOfflineStoreList>
 }
 
 const initState: IReducerOfflineStoreSelectState = {
