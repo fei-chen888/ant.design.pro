@@ -1,6 +1,8 @@
 import { authActionType } from './ActionType'
 import { IReducerAction } from 'src/models/Reducers'
 import { IAuthinfoUser } from 'src/models/Auth'
+import { IReduxState } from 'src/reducers/Store'
+import _ from 'lodash'
 
 export interface IReducerAuthState {
   user: IAuthinfoUser | undefined
@@ -16,13 +18,25 @@ const initState: IReducerAuthState = {
 
 export const authinfoReducer = (state: IReducerAuthState = initState, action: IReducerAction<IReducerAuthState>) => {
   switch (action.type) {
-    case authActionType.SET:
+    case authActionType.LOGIN:
       return {
-        user: action.data ? action.data.user : undefined,
+        user: action.data ? _.cloneDeep(action.data.user) : undefined,
         tenantCode: action.data ? action.data.tenantCode : '',
         token: action.data ? action.data.token : '',
       }
+    case authActionType.LOGOUT:
+      return {
+        user: undefined,
+        tenantCode: '',
+        token: ''
+      }
     default:
       return state
+  }
+}
+
+export const authMapStateToProps = (state: IReduxState) => {
+  return {
+    reduxStore: _.cloneDeep(state.auth)
   }
 }

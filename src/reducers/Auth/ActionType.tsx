@@ -1,3 +1,4 @@
 export const authActionType = {
-  SET: 'AUTH/SET'
+  LOGIN: 'AUTH/LOGIN',
+  LOGOUT: 'AUTH/LOGOUT'
 }

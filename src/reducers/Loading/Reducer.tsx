@@ -1,5 +1,6 @@
 import { loadingActionType } from './ActionType'
 import { IReducerAction } from 'src/models/Reducers'
+import { IReduxState } from 'src/reducers/Store'
 
 export interface IReducerLoadingState {
   loading: boolean
@@ -28,5 +29,11 @@ export const loadingReducer = (state: IReducerLoadingState = initState, action: 
       }
     default:
       return state
+  }
+}
+
+export const spinMapStateToProps = (state: IReduxState) => {
+  return { 
+    reduxStore: { ...state.spin }
   }
 }

@@ -1,0 +1,35 @@
+@import "~@globalCss/AntdTheme.less";
+.offlineStoreSelect {
+    .pagination {
+        padding: @padding-sm;
+    }
+    .button {
+        .buttonContent {
+            display: flex;
+            align-items: center;
+            .buttonContentBody{
+                flex: 1 0 0;
+                text-align: left;
+                overflow: hidden;
+            }
+            .buttonContentFoot {
+                margin-left: @padding-lg;
+            }
+        }
+    }
+}
+.menuItem {
+    .menuItemAvatar {
+        margin-right: @padding-sm;
+    }
+}
+.dropdownOverlay {
+    min-width: 200px;
+    .active {
+        background: @item-hover-bg;
+    }
+    .pagination {
+        padding: @padding-sm;
+        background: @layout-body-background;
+    }
+}

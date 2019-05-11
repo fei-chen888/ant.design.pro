@@ -12,7 +12,7 @@ export interface IAbstractPageState {
     total?: number
 }
 
-export abstract class AbstractPage<P extends IAbstractPageProps, S extends IAbstractPageState> extends React.PureComponent<P, S> {
+export abstract class AbstractPage<P extends IAbstractPageProps, S extends IAbstractPageState> extends React.Component<P, S> {
     /**
      * 类名
      */
@@ -62,7 +62,6 @@ export abstract class AbstractPage<P extends IAbstractPageProps, S extends IAbst
      * 不要重写，请通过实现getRenderContent
      */
     render() {
-        console.log(this.displayName)
-        return this.getRenderContent()
+        return <div className="global-page">{this.getRenderContent()}</div>
     }
 }

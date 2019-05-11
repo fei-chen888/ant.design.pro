@@ -2,6 +2,27 @@
 @import "~antd/dist/antd.less";
 @import "./AntdTheme.less";
 
+// page
+.global-page {
+    background: @white;
+    padding: @padding-lg;
+}
+
+// Form
+.global-form-search {
+    margin-bottom: @padding-lg;
+    .ant-form-item {
+        display: inline-flex;
+    }
+    .ant-form-item-label {
+        flex: 0 0 1;
+    }
+    .ant-form-item-control-wrapper {
+        flex: 1;
+        padding-right: @padding-lg;
+    }
+}
+
 // Form-item
 .ant-form-item-with-help {
     margin-bottom: @form-item-margin-bottom;
@@ -92,7 +113,7 @@
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.6);
-    z-index: 999;
+    z-index: 9999;
 }
 
 // Select
@@ -110,4 +131,9 @@
 }
 .ant-modal-footer {
     padding: 16px;
+}
+
+// Dropdown
+.ant-dropdown-menu {
+    padding: 0;
 }

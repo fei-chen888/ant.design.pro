@@ -10,7 +10,8 @@ export const REQUEST_STATUSCODE = {
         text: '身份验证失败'
     }
 }
-export const PAGESIZE = 15
+export const DEFAULT_PAGESIZE = 15
+export const DEFAULT_PAGESIZE_SMALL = 10
 
 export const ADMIN_HOME = '/admin/dashboard/workplace'
 export const ADMIN_LOGIN = '/login'

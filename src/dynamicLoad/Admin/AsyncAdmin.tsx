@@ -8,14 +8,16 @@ import { RouteBreadcrumb } from 'src/components/RouteBreadcrumb/RouteBreadcrumb'
 import { Link } from 'react-router-dom'
 import { MenuProps, ClickParam } from 'antd/lib/menu'
 import { connect } from 'react-redux'
-import { IReduxState } from 'src/reducers/Store'
-import { IAuthinfoUser } from 'src/models/Auth'
 import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
 import { authService } from 'src/services/Auth'
 import { REQUEST_STATUSCODE, ADMIN_LOGIN } from 'src/utils/Constants'
+import { authMapStateToProps, IReducerAuthState } from 'src/reducers/Auth/Reducer'
 
+/**
+ * reduxStore redux中的数据
+ */
 interface IProps extends IAbstractComponentProps, RouteComponentProps<any> {
-    user: IAuthinfoUser | undefined
+    reduxStore?: IReducerAuthState
 }
 
 interface IState extends IAbstractComponentState {
@@ -135,6 +137,7 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
     }
 
     getRenderContent() {
+        const { reduxStore } = this.props
         return (
             <Layout>
                 <Layout.Sider className="global-layout-sider" trigger={null} collapsible={true} collapsed={this.state.collapsed}>
@@ -156,11 +159,11 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
                             onClick={this.onToggle}
                         />
                         <RouteBreadcrumb {...this.props} routers={this.getAdminRoutes()}/>
-                        {this.props.user ? (
+                        {reduxStore && reduxStore.user ? (
                             <Dropdown overlay={this.getUserDropdownMenu}>
                                 <div className="global-layout-main-header-right">
-                                    <Avatar className="global-layout-main-header-right-avatar" shape="circle" size={24} src={this.props.user.icon}/>
-                                    <span>{this.props.user.fullName}</span>
+                                    <Avatar className="global-layout-main-header-right-avatar" shape="circle" size={24} src={reduxStore.user.icon}/>
+                                    <span>{reduxStore.user.fullName}</span>
                                 </div>
                             </Dropdown>
                         ) : null}
@@ -182,10 +185,4 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
  * admin路由页面
  * @param state 
  */
-const mapStateToProps = (state: IReduxState) => {
-    return {
-        user: state.authStore.user
-    }
-}
-
-export const AsyncAdmin = withRouter(connect(mapStateToProps)(AsyncSubModuleRouterClass))
+export const AsyncAdmin = withRouter(connect(authMapStateToProps)(AsyncSubModuleRouterClass))

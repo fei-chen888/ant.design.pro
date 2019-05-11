@@ -84,7 +84,7 @@ class SelectTenantModalClass extends AbstractComponent<IProps, IState> {
         const { value = [] } = this.props
         return (
         <Row>
-            <Radio.Group onChange={d => this.setState({selectTenant: d.target.value})}>
+            <Radio.Group className={styles.tenantGroup} onChange={d => this.setState({selectTenant: d.target.value})}>
             {value.map(tenant => {
                 return (
                     <Row className={styles.tenant} key={tenant.tenantCode}>

@@ -3,8 +3,8 @@ import { LocaleProvider, notification } from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import { ErrorHandler } from 'src/components/ErrorHandler/ErrorHandler'
 import { Routes } from 'src/routes/Routes'
-import { ReduxSpin } from 'src/components/ReduxSpin/ReduxSpin'
 import { authService } from 'src/services/Auth'
+import { GlobalSpin } from 'src/components/GlobalSpin/GlobalSpin'
 
 interface IProps {}
 
@@ -26,7 +26,7 @@ class App extends React.Component<IProps, IState> {
         return (
           <LocaleProvider locale={zhCN}>
               <ErrorHandler>
-                <ReduxSpin/>
+                <GlobalSpin/>
                 <Routes redirect="/login" />
               </ErrorHandler>
           </LocaleProvider>

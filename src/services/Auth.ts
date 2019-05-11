@@ -52,7 +52,7 @@ export namespace authService {
             token
         }
         store.dispatch({
-            type: authActionType.SET,
+            type: authActionType.LOGIN,
             data
         })
     }
@@ -61,8 +61,8 @@ export namespace authService {
      * 从store中读取用户信息、租户code、token
      */
     export function getAuthFormStore() {
-        const { authStore } = store.getState()
-        return authStore
+        const { auth } = store.getState()
+        return auth
     }
 
     /**
@@ -70,14 +70,8 @@ export namespace authService {
      */
     export function removeAuthFormStore() {
         removeToken()
-        const data: IReducerAuthState = {
-            user: undefined,
-            tenantCode: '',
-            token: ''
-        }
         store.dispatch({
-            type: authActionType.SET,
-            data
+            type: authActionType.LOGOUT
         })
     }
 }

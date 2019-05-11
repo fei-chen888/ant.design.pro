@@ -15,7 +15,7 @@ export interface IAbstractComponentState {
     pageSize?: number
     total?: number
 }
-export abstract class AbstractComponent<P extends IAbstractComponentProps, S extends IAbstractComponentState> extends React.PureComponent<P, S> {
+export abstract class AbstractComponent<P extends IAbstractComponentProps, S extends IAbstractComponentState> extends React.Component<P, S> {
     /**
      * 类名
      */
@@ -25,6 +25,34 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      * state 初始化
      */
     abstract state: S
+
+    /**
+     * componentDidUpdate中需要异步请求时，防止重复请求的状态
+     * 
+     * 
+     * 示例代码
+     * 
+     * componentDidUpdate(){
+     *  const { name } = this.state 
+     *  if (!this.componentDidUpdatePending && name ) {
+     *      数据请求()
+     *  }
+     * }
+     * async 数据请求() {
+     *  this.componentDidUpdatePending = true
+     *  await xxxx()
+     *  this.setState(
+     *      {
+     *          name:XXX
+     *      },
+     *      () => {
+     *          this.componentDidUpdatePending = false
+     *      }
+     *  )
+     * }
+     * 
+     */
+    componentDidUpdatePending: boolean = false
 
     /**
      * render 内容
@@ -79,7 +107,6 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      * 不要重写，请通过实现getRenderContent
      */
     render() {
-        console.log(this.displayName)
         return this.getRenderContent()
     }
 }
