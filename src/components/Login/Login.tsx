@@ -2,7 +2,7 @@ import styles from './Login.less'
 import * as React from 'react'
 import { Form, Button, Input, Icon, Row } from 'antd'
 import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
-import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
+import { methodTry } from 'src/decorator/Try'
 import { FormComponentProps } from 'antd/lib/form'
 import { authService } from 'src/services/Auth'
 import { REQUEST_STATUSCODE } from 'src/utils/Constants'
@@ -36,7 +36,7 @@ class LoginClass extends AbstractComponent<IProps, IState> {
     /**
      * 登录事件
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     async onLogin() {
         const { form } = this.props
         form.validateFields( async (error, values: ILoginFormFileds) => {

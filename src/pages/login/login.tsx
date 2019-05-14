@@ -6,7 +6,7 @@ import Login from 'src/components/Login/Login'
 import { Layout, Form } from 'antd'
 import { RouteComponentProps } from 'react-router'
 import { IAuthLogin, IStaffTenant, IAuthinfo } from 'src/models/Auth'
-import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
+import { methodTry } from 'src/decorator/Try'
 import { SelectTenantModal } from 'src/components/Login/SelectTenantModal'
 import { ADMIN_HOME } from 'src/utils/Constants'
 import { authService } from 'src/services/Auth'
@@ -39,7 +39,7 @@ class LoginPageClass extends AbstractPage<IProps, IState> {
     /**
      * 登录组件，登录成功事件
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     onLoginSuccess(d: IAuthLogin) {
         const staffTenants: Array<IStaffTenant> = JSON.parse(d.staffTenants || '[]')
         this.setState({
@@ -51,7 +51,7 @@ class LoginPageClass extends AbstractPage<IProps, IState> {
     /**
      * 选择租户，登录功能事件
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     onSelectTenantSuccess(d: IStaffTenant, u: IAuthinfo) {
         this.gotoAdminHome()
     }

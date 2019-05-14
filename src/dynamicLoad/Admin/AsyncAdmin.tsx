@@ -8,7 +8,7 @@ import { RouteBreadcrumb } from 'src/components/RouteBreadcrumb/RouteBreadcrumb'
 import { Link } from 'react-router-dom'
 import { MenuProps, ClickParam } from 'antd/lib/menu'
 import { connect } from 'react-redux'
-import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
+import { methodTry } from 'src/decorator/Try'
 import { authService } from 'src/services/Auth'
 import { REQUEST_STATUSCODE, ADMIN_LOGIN } from 'src/utils/Constants'
 import { authMapStateToProps, IReducerAuthState } from 'src/reducers/Auth/Reducer'
@@ -118,7 +118,7 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
     /**
      * 用户DropdownMenu事件
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     async onUserDropdownMenuClick(e: ClickParam) {
         if (e.key === 'logout') {
             const res = await authService.logout()
@@ -156,7 +156,7 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
                         <Icon
                             className="trigger"
                             type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.onToggle}
+                            onClick={() => this.onToggle()}
                         />
                         <RouteBreadcrumb {...this.props} routers={this.getAdminRoutes()}/>
                         {reduxStore && reduxStore.user ? (

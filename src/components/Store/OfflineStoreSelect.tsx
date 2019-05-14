@@ -7,7 +7,7 @@ import { IOfflineStoreList } from 'src/models/Store'
 import { storeService } from 'src/services/Store'
 import { connect } from 'react-redux'
 import { offlineStoreSelectMapStateToProps, IReducerOfflineStoreSelectState } from 'src/reducers/OfflineStoreSelect/Reducer'
-import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
+import { methodTry } from 'src/decorator/Try'
 import { FormConnectHOC } from 'src/components/HOC/Hoc'
 
 /**
@@ -107,7 +107,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
     /**
      * DropdownMenu事件
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     onDropdownMenuClick(e?: IOfflineStoreList) {
         const { onChange } = this.props
         const { selectValue } = this.state
@@ -142,7 +142,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
     /**
      * 获取门店数据
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     async getOfflineStoreDate() {
         const { pageNum = 1, pageSize = DEFAULT_PAGESIZE_SMALL } = this.state
         this.showLoading()
@@ -169,7 +169,7 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
     /**
      * 根据id获取门店获店数据
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     async getOfflineStoreDateById(storeId: number) {
         this.componentDidUpdatePending = true
         let { selectValue } = this.state

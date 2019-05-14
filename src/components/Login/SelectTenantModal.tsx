@@ -4,7 +4,7 @@ import { Row, Modal, Radio, Avatar } from 'antd'
 import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
 import { IStaffTenant, IAuthinfo } from 'src/models/Auth'
 import { ModalProps } from 'antd/lib/modal'
-import { methodTryCatchDecorator } from 'src/decorator/MethodTryCatchDecorator'
+import { methodTry } from 'src/decorator/Try'
 import { authService } from 'src/services/Auth'
 import { REQUEST_STATUSCODE } from 'src/utils/Constants'
 import { setTenantCode, setUserinfo } from 'src/utils/CryptoLocalStorage'
@@ -54,7 +54,7 @@ class SelectTenantModalClass extends AbstractComponent<IProps, IState> {
     /**
      * 选择租户事件
      */
-    @methodTryCatchDecorator()
+    @methodTry()
     async onOk() {
         const { selectTenant } = this.state
         if (selectTenant) {

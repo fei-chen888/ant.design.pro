@@ -8,6 +8,7 @@ interface IState extends IAbstractComponentState {
     errorInfo: ErrorInfo | null
 }
 
+
 class ErrorHandlerClass extends AbstractComponent<IProps, IState> {
 
     displayName = 'ErrorHandlerClass'
@@ -16,7 +17,7 @@ class ErrorHandlerClass extends AbstractComponent<IProps, IState> {
         error: null,
         errorInfo: null
     }
-
+    
     /**
      * 捕捉组件中render错误
      */

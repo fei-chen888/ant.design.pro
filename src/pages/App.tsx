@@ -5,7 +5,6 @@ import { ErrorHandler } from 'src/components/ErrorHandler/ErrorHandler'
 import { Routes } from 'src/routes/Routes'
 import { authService } from 'src/services/Auth'
 import { GlobalSpin } from 'src/components/GlobalSpin/GlobalSpin'
-
 interface IProps {}
 
 interface IState {}

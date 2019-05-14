@@ -93,7 +93,14 @@ class WorkplacePageClass extends AbstractPage<IProps, IState> {
      */
     onSearch(d: IOrderSearchFormField | undefined) {
         this.formSearchData = d
-        this.getOrderListData()
+        this.setState(
+            {
+                pageNum: 1
+            },
+            () => {
+                this.getOrderListData()
+            }
+        )
     }
 
     /**

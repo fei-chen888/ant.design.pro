@@ -3,7 +3,6 @@ import { Spin } from 'antd'
 import { connect } from 'react-redux'
 import { AbstractComponent, IAbstractComponentProps, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
 import { spinMapStateToProps, IReducerLoadingState } from 'src/reducers/Loading/Reducer'
-
 /**
  * reduxStore redux中的数据
  */
@@ -14,7 +13,7 @@ interface IProps extends IAbstractComponentProps {
 interface IState extends IAbstractComponentState {}
 
 class GlobalSpinClass extends AbstractComponent<IProps, IState> {
-
+    
     displayName = 'GlobalSpinClass'
 
     state: IState = {}

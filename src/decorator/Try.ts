@@ -5,7 +5,7 @@ import { notice } from 'src/utils/Notification'
  * @param catchCallbackName 类中接收cath中回调方法名，回调参数error：Error
  * @returns Function() 返回PropertyDescriptor 
  */
-export function methodTryCatchDecorator(catchCallbackName?: string ) {
+export function methodTry(catchCallbackName?: string ) {
     async function asyncFn(_this: any, displayName: string, methodName: string, fn: Function, prams: any) {
         try {
             await fn.apply(_this, prams)
