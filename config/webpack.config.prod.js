@@ -18,8 +18,10 @@ const postcssFlexbugsFixes = require('postcss-flexbugs-fixes')
 const CopyWebpackPlugin= require('copy-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const paths = require('./paths')
+const alias = require('./alias')
 const getClientEnvironment = require('./env')
 const { prodScripts } = require('./externals')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const cssModule = {
     importLoaders: 1,
     modules: true,
@@ -94,6 +96,7 @@ module.exports = {
         //     path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/')
     },
     resolve: {
+        alias,
         // This allows you to set a fallback for where Webpack should look for modules.
         // We placed these paths second because we want `node_modules` to "win"
         // if there are any conflicts. This matches Node resolution mechanism.
@@ -335,6 +338,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new BundleAnalyzerPlugin(),
         new webpack.DefinePlugin(env.stringified),
         new UglifyJsPlugin({
             uglifyOptions: {

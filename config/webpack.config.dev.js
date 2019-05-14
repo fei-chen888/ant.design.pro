@@ -15,6 +15,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const CopyWebpackPlugin= require('copy-webpack-plugin')
 const getClientEnvironment = require('./env')
 const paths = require('./paths')
+const alias = require('./alias')
 const { devScripts } = require('./externals')
 const externalsMap = {}
 const cssModule = {
@@ -91,9 +92,7 @@ module.exports = {
         devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
     },
     resolve: {
-        alias: {
-            "@globalCss": path.join(__dirname, '../src/globalCss')
-        },
+        alias,
         // This allows you to set a fallback for where Webpack should look for modules.
         // We placed these paths second because we want `node_modules` to "win"
         // if there are any conflicts. This matches Node resolution mechanism.
