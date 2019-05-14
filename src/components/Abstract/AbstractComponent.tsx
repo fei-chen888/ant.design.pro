@@ -54,6 +54,8 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      */
     componentDidUpdatePending: boolean = false
 
+    componentState: 'pending' | 'complete' = 'pending'
+
     /**
      * render 内容
      */
@@ -72,8 +74,11 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      */
     componentStateChange(componentState: 'pending' | 'complete') {
         const { onComponentStateChange } = this.props
-        if (onComponentStateChange) {
-            onComponentStateChange(componentState)
+        if (this.componentState !== componentState) {
+            this.componentState = componentState
+            if (onComponentStateChange) {
+                onComponentStateChange(componentState)
+            }
         }
     }
 

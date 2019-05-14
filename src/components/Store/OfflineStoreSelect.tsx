@@ -189,10 +189,10 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
                 selectValue
             },
             () => {
-                const { onChange } = this.props
-                if (onChange) {
-                    onChange(selectValue)
-                }
+                // const { onChange } = this.props
+                // if (onChange) {
+                //     onChange(selectValue)
+                // }
                 this.componentDidUpdatePending = false
             }
         )
