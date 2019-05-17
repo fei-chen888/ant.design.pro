@@ -8,7 +8,7 @@ import { OrderSearchForm, IOrderSearchFormField } from 'src/components/Order/Ord
 import { orderService, IOrderServiceOrderList } from 'src/services/Order'
 import { OrderListTable } from 'src/components/Order/OrderListTable'
 import { IOrderList } from 'src/models/Order'
-import { DEFAULT_PAGESIZE } from 'src/utils/Constants'
+import { DEFAULT_PAGESIZE, REQUEST_STATUSCODE } from 'src/utils/Constants'
 
 interface IProps extends IAbstractPageProps, FormComponentProps, RouteComponentProps<any> {}
 
@@ -62,10 +62,11 @@ class WorkplacePageClass extends AbstractPage<IProps, IState> {
             onlineType: 'ONLINE',
             storeId: data ? (data.offlineStore ? data.offlineStore.id : undefined) : undefined,
             pageSize,
-            pageNum
+            pageNum,
+            componentUUID: this.getUUID()
         }
         const res = await orderService.getOrderList(params)
-        if (res) {
+        if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code) {
             this.setState({
                 orderList: res.data.responseContent.list,
                 total: res.data.responseContent.total

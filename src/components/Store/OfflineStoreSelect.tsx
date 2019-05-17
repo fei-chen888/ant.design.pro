@@ -148,7 +148,8 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
         this.showLoading()
         const res = await storeService.getOfflineStoreList({
             pageNum,
-            pageSize
+            pageSize,
+            componentUUID: this.getUUID()
         })
         if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code) {
             this.setState({
@@ -173,7 +174,10 @@ class OfflineStoreSelectClass extends AbstractComponent<IProps, IState> {
     async getOfflineStoreDateById(storeId: number) {
         this.componentDidUpdatePending = true
         let { selectValue } = this.state
-        const res = await storeService.getOfflineStoreById(storeId)
+        const res = await storeService.getOfflineStoreById({
+            storeId,
+            componentUUID: this.getUUID()
+        })
         if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code) {
             selectValue = {
                 ...res.data.responseContent

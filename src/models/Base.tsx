@@ -16,9 +16,10 @@ export interface IResponseListBase<T> {
     }
 }
 
-export interface IPageBase {
-    pageNum: number
-    pageSize: number
+export interface IReuqestBase {
+    pageNum?: number
+    pageSize?: number
+    componentUUID: string
 }
 
 export interface IComponentState {

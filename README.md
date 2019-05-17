@@ -40,7 +40,7 @@
 ## 规范 ##
 * 1、组件继承AbstractComponent类，并设置displayName与getRenderContent，不可覆盖render；
 * 2、请求接口时，使用async/await，并调用this.showLoading()，请求完成后调用this.hidenLoading();
-* 3、类中方法需要Try...Catch的时候，可使用methodTryCatchDecorator装饰器自动处理捕捉，详细请查看methodTryCatchDecorator的实现；
+* 3、类中方法需要Try...Catch的时候，可使用methodTry装饰器自动处理捕捉，详细请查看methodTry的实现；
 * 4、组件样式文件存放在组件当前目录下，并采用CSS MODULES式引入；
 * 5、组件属性、状态必需定义好typeScript类型，不可使用any；
 * 6、选择类组件返回数据必需是对象数据，不可简单的返回id；
@@ -55,7 +55,7 @@
 ## 规范 ##
 * 1、页面继承AbstractPage类，类名为“XXXPage”，并设置displayName与getRenderContent，不可覆盖render；
 * 2、请求接口时，使用async/await，并调用this.showLoading()，请求完成后调用this.hidenLoading();
-* 3、类中方法需要Try...Catch的时候，可使用methodTryCatchDecorator装饰器自动处理捕捉，详细请查看methodTryCatchDecorator的实现；
+* 3、类中方法需要Try...Catch的时候，可使用methodTry装饰器自动处理捕捉，详细请查看methodTry的实现；
 * 4、页面样式文件存放在组件当前目录下，并采用CSS MODULES式引入；
 * 5、页面类必需是export default；
 

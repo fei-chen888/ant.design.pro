@@ -46,7 +46,8 @@ class LoginClass extends AbstractComponent<IProps, IState> {
             this.showLoading()
             const res = await authService.login({
                 username: values.username,
-                password: values.password
+                password: values.password,
+                componentUUID: this.getUUID()
             })
             if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code) {
                 setToken(res.data.responseContent.token)

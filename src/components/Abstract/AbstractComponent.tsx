@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { store } from 'src/reducers/Store'
 import { loadingActionType } from 'src/reducers/Loading/ActionType'
+import { request } from 'src/utils/Request'
 
 
 export interface IAbstractComponentProps<T = any> {
@@ -25,6 +26,11 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      * state 初始化
      */
     abstract state: S
+
+    /**
+     * 组件初始化时间
+     */
+    initTimeSpan: number = 0
 
     /**
      * componentDidUpdate中需要异步请求时，防止重复请求的状态
@@ -60,6 +66,18 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      * render 内容
      */
     abstract getRenderContent(): JSX.Element | null | React.ReactNode
+
+    constructor(props: P) {
+        super(props)
+        this.initTimeSpan = new Date().getTime()
+    }
+
+    /**
+     * 获取组件的UUID，返回displayName_initTimeSpan
+     */
+    getUUID(): string {
+        return `${this.displayName}_${this.initTimeSpan}`
+    }
 
     /**
      * 获取类名
@@ -106,6 +124,12 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      */
     componentDidMount() {
         this.componentStateChange('complete')
+    }
+
+    componentWillUnmount() {
+        if (request.cancel) {
+            request.cancel(this.getUUID())
+        }
     }
     
     /**

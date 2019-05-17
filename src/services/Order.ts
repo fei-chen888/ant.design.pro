@@ -1,9 +1,9 @@
 import { request } from 'src/utils/Request'
-import { IResponseListBase, IPageBase } from 'src/models/Base'
+import { IResponseListBase, IReuqestBase } from 'src/models/Base'
 import { IOrderList } from 'src/models/Order'
 
 
-export interface IOrderServiceOrderList extends IPageBase {
+export interface IOrderServiceOrderList extends IReuqestBase {
     orderCode: string
     storeId?: number
     onlineType: 'OFFLINE' | 'ONLINE'

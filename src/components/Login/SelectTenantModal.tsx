@@ -59,7 +59,10 @@ class SelectTenantModalClass extends AbstractComponent<IProps, IState> {
         const { selectTenant } = this.state
         if (selectTenant) {
             this.showLoading()
-            const res = await authService.getAuthinfos(selectTenant.tenantCode)
+            const res = await authService.getAuthinfos({
+                tenantCode: selectTenant.tenantCode,
+                componentUUID: this.getUUID()
+            })
             if (res.data.statusCode === REQUEST_STATUSCODE.SUCCESS.code && res.data.responseContent.user) {
                 setTenantCode(selectTenant.tenantCode)
                 setUserinfo(JSON.stringify(res.data.responseContent.user))

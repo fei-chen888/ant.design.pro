@@ -1,6 +1,6 @@
 import { IAuthLogin, IAuthinfo } from 'src/models/Auth'
 import { request } from 'src/utils/Request'
-import { IResponseBase } from 'src/models/Base'
+import { IResponseBase, IReuqestBase } from 'src/models/Base'
 import { store } from 'src/reducers/Store'
 import { authActionType } from 'src/reducers/Auth/ActionType'
 import { getToken, getTenantCode, getUserinfo, removeToken } from 'src/utils/CryptoLocalStorage'
@@ -9,9 +9,16 @@ import { IReducerAuthState } from 'src/reducers/Auth/Reducer'
 /**
  * 登录接口参数
  */
-export interface IAuthServiceLogin {
+export interface IAuthServiceLogin extends IReuqestBase {
     username: string   
     password: string
+}
+
+/**
+ * 获取用户信息接口参数
+ */
+export interface IAuthinfos extends IReuqestBase {
+    tenantCode: string
 }
 
 /**
@@ -35,8 +42,8 @@ export namespace authService {
     /**
      * 获取用户信息
      */
-    export function getAuthinfos(tenantCode: string) {
-        return request.get<IResponseBase<IAuthinfo>>(`/auth/noauth/${tenantCode}/users/authinfos`)
+    export function getAuthinfos(params: IAuthinfos) {
+        return request.get<IResponseBase<IAuthinfo>>(`/auth/noauth/${params.tenantCode}/users/authinfos`)
     }
 
     /**
