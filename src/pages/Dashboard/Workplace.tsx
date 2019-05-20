@@ -132,5 +132,5 @@ class WorkplacePageClass extends AbstractPage<IProps, IState> {
     }
 }
 
-export default withRouter(Form.create()(WorkplacePageClass))
+export default Form.create()(withRouter(WorkplacePageClass))
 

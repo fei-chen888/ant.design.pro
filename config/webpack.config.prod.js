@@ -27,12 +27,6 @@ const cssModule = {
     modules: true,
     localIdentName: '[name]-[hash:base64:5]'
 }
-const externalsMap = {}
-prodScripts.forEach(item => {
-    if (item.key) {
-        externalsMap[item.key] = item.value
-    }
-})
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
 const publicPath = paths.servedPath
@@ -78,6 +72,7 @@ module.exports = {
     // In production, we only want to load the polyfills and the app code.
     // entry: [require.resolve('./polyfills'), paths.appIndexJs],
     entry: {
+        vendor: ['react', 'react-dom', 'react-router-dom', 'react-router', 'lodash', 'axios', 'moment', 'immutable', 'redux', 'react-redux'],
         app: paths.appIndexJs,
         polyfills: require.resolve('./polyfills')
     },
@@ -388,6 +383,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             inject: true,
             template: paths.appHtml,
+            chunks: ['vendor', 'polyfills', 'index'],
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
@@ -407,13 +403,7 @@ module.exports = {
             // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
         }),
         new HtmlWebpackIncludeAssetsPlugin({
-            assets: prodScripts.map(item => {
-                return {
-                    path: item.src,
-                    attributes: {...item.attributes},
-                    type: item.type
-                }
-            }),
+            assets: prodScripts,
             append: false,
             publicPath: false
         }),
@@ -488,5 +478,5 @@ module.exports = {
         tls: 'empty',
         child_process: 'empty'
     },
-    externals: externalsMap
+    externals: prodScripts
 }

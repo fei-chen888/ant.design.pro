@@ -16,7 +16,12 @@ let cancelMaps: Object = {}
 axiosInstance.interceptors.request.use(
     requestConfig => {
         const auth = authService.getAuthFormStore()
-        const { componentUUID = '' } = requestConfig.params
+        let componentUUID
+        if (requestConfig.method === 'get' && requestConfig.params) {
+            componentUUID = requestConfig.params.componentUUID
+        } else if (requestConfig.method === 'post' && requestConfig.data) {
+            componentUUID = requestConfig.data.componentUUID
+        }
         if (componentUUID) {
             requestConfig.cancelToken = new CancelToken(reject => {
                 cancelMaps[componentUUID] = reject
@@ -35,7 +40,12 @@ axiosInstance.interceptors.request.use(
  */
 axiosInstance.interceptors.response.use(
     responseData => {
-        const { componentUUID = '' } = responseData.config.params
+        let componentUUID
+        if (responseData.config.method === 'get' && responseData.config.params) {
+            componentUUID = responseData.config.params.componentUUID
+        } else if (responseData.config.method === 'post' && responseData.config.data) {
+            componentUUID = responseData.config.data.componentUUID
+        }
         if (componentUUID) {
             delete cancelMaps[componentUUID]
         }

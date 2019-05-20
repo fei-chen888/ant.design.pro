@@ -17,17 +17,11 @@ const getClientEnvironment = require('./env')
 const paths = require('./paths')
 const alias = require('./alias')
 const { devScripts } = require('./externals')
-const externalsMap = {}
 const cssModule = {
     importLoaders: 1,
     modules: true,
     localIdentName: '[name]-[hash:base64:5]'
 }
-devScripts.forEach(item => {
-    if (item.key) {
-        externalsMap[item.key] = item.value
-    }
-})
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/'
@@ -55,6 +49,7 @@ module.exports = {
     // This means they will be the "root" imports that are included in JS bundle.
     // The first two entry points enable "hot" CSS and auto-refreshes for JS.
     entry: {
+        vendor: ['react', 'react-dom', 'react-router-dom', 'react-router', 'lodash', 'axios', 'moment', 'immutable', 'redux', 'react-redux'],
         index: [
             // We ship a few polyfills by default:
             require.resolve('./polyfills'),
@@ -115,7 +110,7 @@ module.exports = {
             // please link the files into your node_modules/ and let module-resolution kick in.
             // Make sure your source files are compiled, as they will not be processed in any way.
             new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
-            new TsconfigPathsPlugin({ configFile: paths.appTsConfig })
+            new TsconfigPathsPlugin({ configFile: paths.appTsConfig }),
         ]
     },
     module: {
@@ -343,19 +338,13 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackIncludeAssetsPlugin({
-            assets: devScripts.map(item => {
-                return {
-                    path: item.src,
-                    attributes: {...item.attributes},
-                    type: item.type
-                }
-            }),
+            assets: devScripts,
             append: false,
             publicPath: false
         }),
         new HtmlWebpackPlugin({
             inject: true,
-            chunks: ['index'],
+            chunks: ['vendor', 'index'],
             template: paths.appHtml
         }),
         new ManifestPlugin({
@@ -417,6 +406,5 @@ module.exports = {
     // cumbersome.
     performance: {
         hints: false
-    },
-    externals: externalsMap
+    }
 }
