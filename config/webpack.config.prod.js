@@ -73,7 +73,7 @@ module.exports = {
     // entry: [require.resolve('./polyfills'), paths.appIndexJs],
     entry: {
         vendor: ['react', 'react-dom', 'react-router-dom', 'react-router', 'lodash', 'axios', 'moment', 'immutable', 'redux', 'react-redux'],
-        app: paths.appIndexJs,
+        index: paths.appIndexJs,
         polyfills: require.resolve('./polyfills')
     },
     output: {
