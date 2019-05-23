@@ -2,7 +2,7 @@
     "name": "ant_design_pro",
     "version": "0.0.1",
     "private": true,
-    "publicPath": "http://js.test.com/",
+    "publicPath": "/",
     "dependencies": {
         "@types/qs": "^6.5.1",
         "@types/react-redux": "^7.0.8",
