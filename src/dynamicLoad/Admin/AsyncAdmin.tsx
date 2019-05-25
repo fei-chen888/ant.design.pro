@@ -97,7 +97,7 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
                         </Menu.SubMenu>
                     )
                 } else {
-                    return <Menu.Item key={item.path}>{item.title}</Menu.Item>
+                    return <Menu.Item key={item.path}><Link to={item.path}><Icon type={item.menuIcon} /><span>{item.title}</span></Link></Menu.Item>
                 }
                 
             } else {

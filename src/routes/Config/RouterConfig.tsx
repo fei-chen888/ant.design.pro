@@ -21,7 +21,8 @@ export const findRouterByPath = (path: string): Array<IExRouteItem> => {
                     {
                         root: list[index].root || list[index].path,
                         parent: list[index].path,
-                        ...item
+                        ...item,
+                        path: list[index].path + '/' + item.path
                     }
                 )
             })
@@ -49,26 +50,34 @@ export const RouterConfig: Array<IRouteItem> = [
         children: [
             {
                 title: '数据面版',
-                path: '/admin/dashboard',
+                path: 'dashboard',
                 showMenu: true,
                 menuIcon: 'calendar',
                 children: [
                     {
                         title: '工作台',
-                        path: '/admin/dashboard/workplace',
+                        path: 'workplace',
                         component: AsyncWorkplace,
                         showMenu: true,
                         remark: '工作台'
                     },
                     {
                         title: '数据分析',
-                        path: '/admin/dashboard/analysis',
+                        path: 'analysis',
                         component: AsyncAnalysis,
                         showMenu: true,
                         remark: '数据分析'
                     }
                 ],
                 remark: '数据面版'
+            },
+            {
+                title: '工作台',
+                path: 'workplace1',
+                component: AsyncWorkplace,
+                menuIcon: 'calendar',
+                showMenu: true,
+                remark: '工作台'
             }
         ],
         remark: '后台管理'
