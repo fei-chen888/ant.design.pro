@@ -71,6 +71,15 @@ export class UserDropdownClass extends AbstractComponent<IProps, IState> {
             ) : null
         )
     }
+
+    shouldComponentUpdate(nextProps: IProps) {
+        const { user: nextUser } = nextProps.reduxStore || { user: undefined }
+        const { user } = this.props.reduxStore || { user: undefined }
+        if (nextUser && user) {
+            return nextUser.fullName !== user.fullName && nextUser.icon !== user.icon
+        }
+        return true
+    }
 }
 
 /**
