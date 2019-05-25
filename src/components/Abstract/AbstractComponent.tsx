@@ -136,6 +136,7 @@ export abstract class AbstractComponent<P extends IAbstractComponentProps, S ext
      * 不要重写，请通过实现getRenderContent
      */
     render() {
+        console.log(this.displayName)
         return this.getRenderContent()
     }
 }

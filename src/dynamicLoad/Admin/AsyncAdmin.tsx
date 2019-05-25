@@ -3,22 +3,16 @@ import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } f
 import { RouteComponentProps, Switch, Route, withRouter } from 'react-router'
 import { IExRouteItem } from 'src/models/Route'
 import { findRouterByPath } from 'src/routes/Config/RouterConfig'
-import { Layout, Icon, Menu, Avatar, Dropdown } from 'antd'
+import { Layout, Icon, Menu, Avatar } from 'antd'
 import { RouteBreadcrumb } from 'src/components/RouteBreadcrumb/RouteBreadcrumb'
 import { Link } from 'react-router-dom'
 import { MenuProps, ClickParam } from 'antd/lib/menu'
-import { connect } from 'react-redux'
 import { methodTry } from 'src/decorator/Try'
 import { authService } from 'src/services/Auth'
 import { REQUEST_STATUSCODE, ADMIN_LOGIN } from 'src/utils/Constants'
-import { authMapStateToProps, IReducerAuthState } from 'src/reducers/Auth/Reducer'
+import { UserDropdown } from 'src/components/User/UserDropdown'
 
-/**
- * reduxStore redux中的数据
- */
-interface IProps extends IAbstractComponentProps, RouteComponentProps<any> {
-    reduxStore?: IReducerAuthState
-}
+interface IProps extends IAbstractComponentProps, RouteComponentProps<any> {}
 
 interface IState extends IAbstractComponentState {
     collapsed: boolean
@@ -137,7 +131,6 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
     }
 
     getRenderContent() {
-        const { reduxStore } = this.props
         return (
             <Layout>
                 <Layout.Sider className="global-layout-sider" trigger={null} collapsible={true} collapsed={this.state.collapsed}>
@@ -159,14 +152,7 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
                             onClick={() => this.onToggle()}
                         />
                         <RouteBreadcrumb {...this.props} routers={this.getAdminRoutes()}/>
-                        {reduxStore && reduxStore.user ? (
-                            <Dropdown overlay={this.getUserDropdownMenu}>
-                                <div className="global-layout-main-header-right">
-                                    <Avatar className="global-layout-main-header-right-avatar" shape="circle" size={24} src={reduxStore.user.icon}/>
-                                    <span>{reduxStore.user.fullName}</span>
-                                </div>
-                            </Dropdown>
-                        ) : null}
+                        <UserDropdown/>
                     </Layout.Header>
                     <Layout.Content className="global-layout-main-content">
                         <Switch>
@@ -185,4 +171,4 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
  * admin路由页面
  * @param state 
  */
-export const AsyncAdmin = withRouter(connect(authMapStateToProps)(AsyncSubModuleRouterClass))
+export const AsyncAdmin = withRouter(AsyncSubModuleRouterClass)
