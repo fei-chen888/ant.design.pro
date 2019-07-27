@@ -30,7 +30,7 @@ export const findRouterByPath = (path: string): Array<IExRouteItem> => {
         }
         index ++
     }
-    return list.filter(item => item.root === path || item.parent === path || item.path === path)
+    return list.filter(item => item.root === path || item.parent === path)
 }
 /**
  * 路由配置，最多支持3级路由

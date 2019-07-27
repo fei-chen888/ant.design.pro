@@ -68,7 +68,6 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
         if (this.routes.length === 0) {
             this.routes = findRouterByPath(this.props.match.path)
         }
-        this.routes = this.routes.filter(item => item.path !== this.props.match.path)
         console.log(this.routes)
         return this.routes
     }
