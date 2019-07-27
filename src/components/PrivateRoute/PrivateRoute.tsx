@@ -24,7 +24,7 @@ class PrivateRouteClass extends AbstractComponent<IProps, IState> {
         if (needAuthorized && token === null) {
             authorized = false
         }
-        return authorized ? <Route {...this.props}/> : <Redirect from={path} to="/login" />
+        return authorized ? <Route {...this.props}/> : <Redirect from={`${path}`} to="/login" />
     }
 }
 

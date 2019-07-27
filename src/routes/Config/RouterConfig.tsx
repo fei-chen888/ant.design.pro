@@ -59,7 +59,25 @@ export const RouterConfig: Array<IRouteItem> = [
                         path: 'workplace',
                         component: AsyncWorkplace,
                         showMenu: true,
-                        remark: '工作台'
+                        remark: '工作台',
+                        children: [
+                            {
+                                title: '添加',
+                                path: 'add',
+                                component: AsyncWorkplace,
+                                showMenu: false,
+                                remark: '添加',
+                                children: [
+                                    {
+                                        title: '添加2',
+                                        path: 'add2',
+                                        component: AsyncWorkplace,
+                                        showMenu: false,
+                                        remark: '添加2'
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         title: '数据分析',

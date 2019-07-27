@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { IAbstractComponentProps, AbstractComponent, IAbstractComponentState } from 'src/components/Abstract/AbstractComponent'
-import { RouteComponentProps, Switch, Route, withRouter } from 'react-router'
+import { RouteComponentProps, withRouter, Switch, Route } from 'react-router'
 import { IExRouteItem } from 'src/models/Route'
 import { findRouterByPath } from 'src/routes/Config/RouterConfig'
 import { Layout, Icon, Menu, Avatar } from 'antd'
@@ -11,8 +11,9 @@ import { methodTry } from 'src/decorator/Try'
 import { authService } from 'src/services/Auth'
 import { REQUEST_STATUSCODE, ADMIN_LOGIN } from 'src/utils/Constants'
 import { UserDropdown } from 'src/components/User/UserDropdown'
+import E404Page from 'src/pages/Errors/E404';
 
-interface IProps extends IAbstractComponentProps, RouteComponentProps<any> {}
+interface IProps extends  IAbstractComponentProps, RouteComponentProps<any> {}
 
 interface IState extends IAbstractComponentState {
     collapsed: boolean
@@ -67,6 +68,8 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
         if (this.routes.length === 0) {
             this.routes = findRouterByPath(this.props.match.path)
         }
+        this.routes = this.routes.filter(item => item.path !== this.props.match.path)
+        console.log(this.routes)
         return this.routes
     }
 
@@ -159,6 +162,7 @@ export class AsyncSubModuleRouterClass extends AbstractComponent<IProps, IState>
                             {this.getAdminRoutes().map(item => {
                                 return item.component ? <Route key={item.path} exact={item.children && item.children.length ? false : true} path={item.path} component={item.component} /> : null
                             })}
+                            <Route component={E404Page}/>
                         </Switch>
                     </Layout.Content>
                 </Layout>
