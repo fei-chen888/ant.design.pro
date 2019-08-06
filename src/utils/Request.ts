@@ -44,7 +44,11 @@ axiosInstance.interceptors.response.use(
         if (responseData.config.method === 'get' && responseData.config.params) {
             componentUUID = responseData.config.params.componentUUID
         } else if (responseData.config.method === 'post' && responseData.config.data) {
-            componentUUID = responseData.config.data.componentUUID
+            try {
+                componentUUID = JSON.parse(responseData.config.data).componentUUID
+            } catch (error) {
+                //
+            }
         }
         if (componentUUID) {
             delete cancelMaps[componentUUID]
